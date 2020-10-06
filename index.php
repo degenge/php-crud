@@ -9,6 +9,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 //include all your model files here
+require 'Model/Helper.php';
 require 'Model/DatabaseConnection.php';
 require 'Model/User.php';
 require 'Model/Student.php';

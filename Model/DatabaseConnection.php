@@ -57,7 +57,6 @@ class DatabaseConnection
     public function Select($statement = "", $parameters = [])
     {
         try {
-
             $stmt = $this->executeStatement($statement, $parameters);
             return $stmt->fetchAll();
 

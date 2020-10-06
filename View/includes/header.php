@@ -20,3 +20,5 @@
     <?php require 'nav.php'?>
 
 </header>
+
+<main class="p-6">

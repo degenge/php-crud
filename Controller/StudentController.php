@@ -18,67 +18,62 @@ class StudentController
         $isFormValid       = true;
 
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-//            if (isset($_POST['update'])) {
-//                $test = Guestbook::getPost($_POST['update']);
-//
-//                $ID        = $test[0]['ID'];
-//                $nameFirst = $test[0]['name_first'];
-//                $nameLast  = $test[0]['name_last'];
-//                $title     = $test[0]['title'];
-//                $message   = $test[0]['message'];
-//            } elseif (isset($_POST['delete'])) {
-//                $test = Guestbook::deletePost($_POST['delete']);
-//
-//            } else {
+            if (isset($_POST['update'])) {
+                $id      = (int)$_POST['update'];
+                $student = $student->read($id);
 
+                $ID        = $student[0]['ID'];
+                $nameFirst = $student[0]['name_first'];
+                $nameLast  = $student[0]['name_last'];
+                $email     = $student[0]['email'];
+
+            } elseif (isset($_POST['delete'])) {
+                $student->delete($_POST['delete']);
+            } else {
                 if (!empty($_POST['name-first'])) {
-                    $nameFirst = sanitizeData($_POST['name-first']);
+                    $nameFirst = Helper::sanitizeData($_POST['name-first']);
                 } else {
                     $isFormValid    = false;
                     $nameFirstError = $errorPrefix . $errorRequiredText . $errorSuffix;
                 }
 
                 if (!empty($_POST['name-last'])) {
-                    $nameLast = sanitizeData($_POST['name-last']);
+                    $nameLast = Helper::sanitizeData($_POST['name-last']);
                 } else {
                     $isFormValid   = false;
                     $nameLastError = $errorPrefix . $errorRequiredText . $errorSuffix;
                 }
 
-                if (!empty($_POST['title'])) {
-                    $title = sanitizeData($_POST['title']);
+                if (!empty($_POST['email'])) {
+                    $email = Helper::sanitizeData($_POST['email']);
                 } else {
                     $isFormValid = false;
-                    $titleError  = $errorPrefix . $errorRequiredText . $errorSuffix;
+                    $emailError  = $errorPrefix . $errorRequiredText . $errorSuffix;
                 }
 
                 if ($isFormValid) {
-                    $id        = $_POST['ID'] ?? '';
-                    $guestbook = new Guestbook($nameFirst, $nameLast, $title, $message, $id);
-                    $guestbook->savePost();
+                    if ($_POST['submit'] === 'post') {
+                        $student1 = new Student($nameFirst, $nameLast, $email);
+                        $student1->create($student1);
+                    } else {
+                        $student1 = new Student($nameFirst, $nameLast, $email, $_POST['ID']);
+                        $student1->update($student1);
+                    }
 
                     // RESET FORM FIELDS
-                    $nameFirst = $nameLast = $title = $message = "";
+                    $nameFirst = $nameLast = $email = "";
                 }
-//            }
+
+            }
 
         }
 
-        $studentList = $student->list();
+        $studentList = Student::list();
 
         //load the view
         require 'View/student.php';
-    }
-
-    // TODO: move to helper CLASS
-    public function sanitizeData($data)
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
     }
 
 }
