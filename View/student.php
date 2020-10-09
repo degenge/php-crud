@@ -2,7 +2,7 @@
 
     <section >
 
-        <h1 class="text-3xl text-blue-900 py-3">Student</h1 >
+        <h1 class="text-3xl text-blue-300 py-3">Student</h1 >
 
         <?php require 'form_student.php'; ?>
 
@@ -15,6 +15,7 @@
                 <th class="sticky top-0 px-6 py-3 text-blue-900 bg-blue-300" >Name First</th >
                 <th class="sticky top-0 px-6 py-3 text-blue-900 bg-blue-300" >Name Last</th >
                 <th class="sticky top-0 px-6 py-3 text-blue-900 bg-blue-300" >Email</th >
+                <th class="sticky top-0 px-6 py-3 text-blue-900 bg-blue-300" >Class</th >
                 <th class="sticky top-0 px-6 py-3 text-blue-900 bg-blue-300" ></th >
             </tr >
             </thead >
@@ -37,6 +38,7 @@
                     <td class="px-6 py-4 text-center" ><?php echo $student['name_first']; ?></td >
                     <td class="px-6 py-4 text-center" ><?php echo $student['name_last']; ?></td >
                     <td class="px-6 py-4 text-center" ><?php echo $student['email']; ?></td >
+                    <td class="px-6 py-4 text-center" ><?php echo $student['className']; ?></td >
                     <td class="px-6 py-4 text-center" >
                         <?php require 'form_student_modal_delete.php'; ?>
                     </td >

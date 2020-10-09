@@ -6,15 +6,17 @@ class StudentController
     //render function with both $_GET and $_POST vars available if it would be needed.
     public function render(array $GET, array $POST)
     {
-        $student = new Student('John', 'Doe', 'john.doe@test.com');
+        $student = new Student('John', 'Doe', 'john.doe@test.com', 1);
 
-        $ID = $nameFirst = $nameLast = $email = "";
+        $ID    = $nameFirst = $nameLast = $email = "";
+        $class = 0;
 
-        $nameFirstError = $nameLastError = $emailError = "";
+        $nameFirstError = $nameLastError = $emailError = $classError = "";
 
         $errorPrefix       = '<p class="text-red-500 text-xs italic" >';
         $errorSuffix       = '</p >';
         $errorRequiredText = 'Please fill out this field.';
+        $errorNotSelected  = 'Please select an option.';
         $isFormValid       = true;
 
 
@@ -28,6 +30,7 @@ class StudentController
                 $nameFirst = $student[0]['name_first'];
                 $nameLast  = $student[0]['name_last'];
                 $email     = $student[0]['email'];
+                $class     = $student[0]['classID'];
 
             } elseif (isset($_POST['delete'])) {
                 $student->delete($_POST['delete']);
@@ -53,17 +56,25 @@ class StudentController
                     $emailError  = $errorPrefix . $errorRequiredText . $errorSuffix;
                 }
 
+                if (!empty($_POST['class'])) {
+                    $class = $_POST['class'];
+                } else {
+                    $isFormValid = false;
+                    $classError  = $errorPrefix . $errorNotSelected . $errorSuffix;
+                }
+
                 if ($isFormValid) {
                     if ($_POST['submit'] === 'post') {
-                        $student1 = new Student($nameFirst, $nameLast, $email);
+                        $student1 = new Student($nameFirst, $nameLast, $email, $class);
                         $student1->create($student1);
                     } else {
-                        $student1 = new Student($nameFirst, $nameLast, $email, $_POST['ID']);
+                        $student1 = new Student($nameFirst, $nameLast, $email, $class, $_POST['ID']);
                         $student1->update($student1);
                     }
 
                     // RESET FORM FIELDS
                     $nameFirst = $nameLast = $email = "";
+                    $class = 0;
                 }
 
             }

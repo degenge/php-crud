@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo htmlspecialchars('index.php?page=student'); ?>" class="py-3" >
+<form method="post" action="<?php echo htmlspecialchars('index.php?page=teacher'); ?>" class="py-3" >
 
     <div class="flex flex-wrap -mx-3 mb-1" >
 
@@ -29,27 +29,26 @@
 
         <div class="w-full md:w-1/2 px-3" >
             <label for="class" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" > Class </label >
-            <div class="relative" >
-                <select id="class" name="class"
-                        class="block appearance-none w-full bg-gray-200 border text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white <?php echo (empty($classError)) ? 'border-gray-200 focus:border-gray-500' : 'border-red-500'; ?>" >
-                    <option value="" disabled selected >Choose a class</option >
-                    <?php foreach (Classgroup::list() as $classItem) { ?>
-                        <?php
-                        $selected = '';
-                        if (isset($class)) {
-                            if ($classItem['ID'] === $class) {
-                                $selected = 'selected';
+            <div class="mt-2" >
+                <?php foreach (Classgroup::list() as $classItem) { ?>
+                    <?php
+                    $checked = '';
+                    if (isset($class)) {
+                        foreach ($class as $classtest) {
+                            if ($classItem['ID'] === $classtest['id']) {
+                                $checked = 'checked';
                             }
                         }
-                        ?>
-                        <option value="<?php echo $classItem['ID']; ?>" <?php echo $selected; ?> ><?php echo $classItem['name']; ?></option >
-                    <?php } ?>
-                </select >
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700" >
-                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" >
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg >
-                </div >
+                    }
+                    ?>
+                    <div >
+                        <label class="block" >
+                            <input type="checkbox" name="class[]" value="<?php echo $classItem['ID']; ?>" class="mr-2 leading-tight" <?php echo $checked; ?>/>
+                            <span class="ml-2" ><?php echo $classItem['name']; ?></span >
+                        </label >
+                    </div >
+
+                <?php } ?>
             </div >
             <?php echo $classError; ?>
         </div >
